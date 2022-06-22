@@ -1,10 +1,9 @@
 use super::{Runtime, Event, Balance, Balances, AccountId, parameter_types};
 
-pub const MILLISYMB: Balance = 1_000_000_000_000_000;
-pub const SYMB: Balance = 1_000 * MILLISYMB;
+pub const FINNEY: Balance = 1_000_000_000_000_000;
 
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-    (items as Balance + bytes as Balance) * MILLISYMB / 1_000_000
+    (items as Balance + bytes as Balance) * FINNEY / 1_000_000
 }
 
 // stole from https://github.com/AstarNetwork/Astar/blob/master/runtime/astar/src/lib.rs
