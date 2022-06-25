@@ -27,16 +27,19 @@ use sp_version::RuntimeVersion;
 pub use frame_support::{
 	construct_runtime, parameter_types,
 	traits::{
-		ConstU128, ConstU32, ConstU64, ConstU8, KeyOwnerProofSystem, Randomness, StorageInfo,
+		ConstU128, ConstU32, ConstU64, ConstU8, KeyOwnerProofSystem, Nothing, Randomness,
+		StorageInfo,
 	},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		IdentityFee, Weight,
+		DispatchClass, IdentityFee, Weight,
 	},
 	StorageValue,
 };
+
 pub use frame_system::Call as SystemCall;
 pub use pallet_balances::Call as BalancesCall;
+pub use pallet_contracts::{weights::WeightInfo, DefaultContractAccessWeight};
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::CurrencyAdapter;
 #[cfg(any(feature = "std", test))]
@@ -45,6 +48,9 @@ pub use sp_runtime::{Perbill, Permill};
 
 pub mod assets_config;
 pub use assets_config::*;
+
+pub mod contracts_config;
+pub use contracts_config::*;
 
 /// Import the template pallet.
 pub use pallet_template;
@@ -287,6 +293,7 @@ construct_runtime!(
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template,
 		Assets: pallet_assets::{Pallet, Storage, Call, Event<T>},
+		Contracts: pallet_contracts::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
