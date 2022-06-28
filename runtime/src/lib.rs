@@ -52,8 +52,7 @@ pub use assets_config::*;
 pub mod contracts_config;
 pub use contracts_config::*;
 
-/// Import the template pallet.
-pub use pallet_template;
+pub use pallet_poe;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -270,9 +269,13 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
-impl pallet_template::Config for Runtime {
+parameter_types! {
+	pub const MaxBytesInHash: u8 = 32;
+}
+
+impl pallet_poe::Config for Runtime {
 	type Event = Event;
+	type MaxBytesInHash = MaxBytesInHash;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -290,8 +293,7 @@ construct_runtime!(
 		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
-		// Include the custom logic from the pallet-template in the runtime.
-		TemplateModule: pallet_template,
+		ProofOfExistence: pallet_poe,
 		Assets: pallet_assets::{Pallet, Storage, Call, Event<T>},
 		Contracts: pallet_contracts::{Pallet, Call, Storage, Event<T>},
 	}
@@ -338,7 +340,7 @@ mod benches {
 		[frame_system, SystemBench::<Runtime>]
 		[pallet_balances, Balances]
 		[pallet_timestamp, Timestamp]
-		[pallet_template, TemplateModule]
+		[pallet_poe, TemplateModule]
 	);
 }
 
